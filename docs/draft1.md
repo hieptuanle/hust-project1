@@ -4,7 +4,7 @@
 
 ## Tiêu đề
 
-Hướng dẫn lập trang web đơn giản sử dụng EntityFramework
+Xây dựng chatbot hỗ trợ đặt bánh sinh nhật online
 
 ## Yêu cầu
 
