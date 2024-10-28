@@ -148,7 +148,7 @@ Chatbot có thể có một adapter cho mỗi nền tảng nhắn tin (Zalo, Fac
 
 #### 2.2. Kiến trúc hướng sự kiện trong Node.js
 
-Kiến trúc hướng sự kiện (Event Driven Architecture) trong Node.js là một khía cạnh quan trọng khác của việc thiết kế các hệ thống chatbot có khả năng mở rộng. Node.js, vốn không đồng bộ và không chặn, rất xuất sắc trong việc xử lý nhiều sự kiện đồng thời, khiến nó trở nên lý tưởng cho các ứng dụng thời gian thực như chatbot xử lý các tin nhắn từ nhiều người dùng đồng thời (Freeman & Perry, 2021).
+Kiến trúc hướng sự kiện (Event Driven Architecture) trong Node.js là một khía cạnh quan trọng khác của việc thiết kế các hệ thống chatbot có khả năng mở rộng. Node.js, vốn không đồng bộ và không chặn, rất xuất sắc trong việc xử lý nhiều sự kiện đồng thời, khiến nó trở nên lý tưởng cho các ứng dụng thời gian thực như chatbot xử lý các tin nhắn từ nhiều người dùng đồng thời.
 
 Các tài liệu cho thấy các hệ thống hướng sự kiện rất phù hợp cho các ứng dụng chatbot, trong đó các sự kiện khác nhau — chẳng hạn như tin nhắn đến của người dùng, trả lời đi và các lệnh gọi API đến các dịch vụ của bên thứ ba — xảy ra không đồng bộ (Richter & Coronel, 2020). Bằng cách sử dụng vòng lặp sự kiện và cơ chế gọi lại của Node.js, hệ thống có thể xử lý hiệu quả các nhu cầu I/O cao điển hình của các tương tác dựa trên trò chuyện trên nhiều nền tảng.
 
