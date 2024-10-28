@@ -5,8 +5,9 @@
 ## Cấu trúc repo
 
 - `docs`: Chứa các file tài liệu báo cáo
+  - Bản Draft 1: [[docs/draft-1.md]]
 - `src`: Chứa code chạy chương trình
 
 ## Cách chạy project
 
-(Chưa có)
+(Sẽ cập nhật)
