@@ -40,6 +40,12 @@
       - [3.5. Quy trình Tiền xử lý](#35-quy-trình-tiền-xử-lý)
       - [3.5. Kết luận](#35-kết-luận)
   - [III. Triển khai thực tế](#iii-triển-khai-thực-tế)
+    - [1. Chức năng](#1-chức-năng)
+      - [1.1. Mô tả chức năng](#11-mô-tả-chức-năng)
+      - [1.2. Sơ đồ Usecase](#12-sơ-đồ-usecase)
+    - [2. Các thành phần của hệ thống](#2-các-thành-phần-của-hệ-thống)
+    - [3. Dữ liệu](#3-dữ-liệu)
+    - [4. Các giai đoạn phát triển](#4-các-giai-đoạn-phát-triển)
     - [1. Phiên bản thử nghiệm 0.1](#1-phiên-bản-thử-nghiệm-01)
     - [2. Phiên bản thử nghiệm 0.2](#2-phiên-bản-thử-nghiệm-02)
     - [3. Phiên bản thử nghiệm 0.3](#3-phiên-bản-thử-nghiệm-03)
@@ -212,6 +218,27 @@ Xử lý hiệu quả các yêu cầu của khách hàng là yêu cầu trọng 
 
 ## III. Triển khai thực tế
 
+Khi triển khai thực tế dự án, ta có nhiều góc nhìn, tương ứng với các loại sơ đồ tương ứng:
+- Góc nhìn về chức năng của người dùng, ta dùng sơ đồ Usecase
+- Góc nhìn về các thành phần của hệ thống, ta dùng sơ đồ Class
+- Góc nhìn về các dữ liệu, ta dùng sơ đồ ERD
+
+### 1. Chức năng
+
+#### 1.1. Mô tả chức năng
+
+
+#### 1.2. Sơ đồ Usecase
+
+
+### 2. Các thành phần của hệ thống
+
+
+### 3. Dữ liệu
+
+
+### 4. Các giai đoạn phát triển
+
 Dự án này chọn cách tiếp cận theo phương pháp Agile để phát triển, với các phiên bản được phát hành theo từng giai đoạn.
 
 ### 1. Phiên bản thử nghiệm 0.1
@@ -220,7 +247,7 @@ Phiên bản này chủ yếu để xây dựng nền tảng hoạt động cho 
 
 Trong Agile, ta sẽ phát triển các câu chuyện người dùng (user stories) và các công việc con (tasks) để hoàn thành các công việc của từng câu chuyện.
 
-Các user stories và tasks cụ thể của phiên bản này là:
+Các user stories và các tác vụ (tasks) cụ thể của phiên bản này là:
 
 - [ ] Khi người dùng chào, chatbot phản hồi và chào người dùng
   - [ ] Đăng ký một Page trên Facebook để chatbot có thể nhận tin nhắn
