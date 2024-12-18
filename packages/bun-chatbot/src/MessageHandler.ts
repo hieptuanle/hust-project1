@@ -1,7 +1,9 @@
-import { Platform, PlatformMessage } from "./platforms";
+import type { JobData } from "./JobHandler";
+import type { Platform, PlatformMessage } from "./platforms";
+import type { Queue } from "./queue/Queue";
 
 export class MessageHandler {
-  constructor(private platform: Platform, private queue: Queue) {}
+  constructor(private platform: Platform, private queue: Queue<JobData>) { }
 
   // should not throw errors, just log them
   async handleIncomingMessage(body: any) {
@@ -20,19 +22,19 @@ export class MessageHandler {
     }
 
     try {
-      await platform.sendMessage({
-        receiver: message.sender,
-        message: "Hello",
+      await this.queue.add({
+        name: "PROCESS_MESSAGE",
+        data: {
+          type: "PROCESS_MESSAGE",
+          payload: {
+            message,
+            platform: this.platform.id,
+          },
+        },
       });
     } catch (error) {
-      console.error("Failed to send message to platform:", error);
+      console.error("Failed to send message to queue:", error);
     }
-
-    // try {
-    //   await this.queue.send(message);
-    // } catch (error) {
-    //   console.error("Failed to send message to queue:", error);
-    // }
   }
 
   async getMessages() {

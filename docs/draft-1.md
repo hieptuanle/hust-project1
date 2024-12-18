@@ -54,8 +54,6 @@
 
 <!-- /code_chunk_output -->
 
-
-
 ## I. Khái quát vấn đề
 
 ### 1. Giới thiệu
@@ -67,7 +65,7 @@ Công Ty Trách Nhiệm Hữu Hạn Savor Việt Nam (Website [www.savor.vn](htt
 - Gọi điện thoại trực tiếp
 
 ![Website Savor Cake](website-savor-cake.png)
-*Hình 1: Giao diện Website của Savor Cake*
+_Hình 1: Giao diện Website của Savor Cake_
 
 Hiện nay số lượng đơn hàng đặt bánh ngày càng tăng. Tỉ trọng đặt đơn hàng qua hình thức Nhắn tin trực tuyến luôn duy trì ở mức 60% - 70% tạo ra áp lực lớn trong việc tăng số lượng NVCSKH cũng như đảm bảo chất lượng phục vụ. Vì thế, Savor Cake có nhu cầu triển khai phần mềm chăm sóc khách hàng (Chatbot) tự động qua tin nhắn để giải quyết vấn đề trên.
 
@@ -104,6 +102,7 @@ Một số nghiệp vụ đặc thù như xử lý khiếu nại, tư vấn đ�
 Theo định nghĩa trong môn học Nhập môn Cơ sở dữ liệu, hệ quản trị cơ sở dữ liệu (Database Management System - DBMS) là một phần mềm cho phép tạo lập các cơ sở dữ liệu cho các ứng dụng phần mềm. DBMS cho phép định nghĩa các kiểu, cấu trúc và ràng buộc dữ liệu. Ngoài ra, DBMS còn cung cấp các công cụ để tạo lập, lưu trữ trên thiết bị nhớ, quản lý và truy vấn cơ sở dữ liệu. DBMS sử dụng ngôn ngữ truy vấn dữ liệu (Data Query Language - DQL) để tương tác với cơ sở dữ liệu.
 
 Một trong số các cách phân loại DBMS là phân loại theo mô hình dữ liệu. Cụ thể, phổ biến nhất hiện nay ta có các kiểu mô hình dữ liệu:
+
 - Mô hình dữ liệu quan hệ (Relational Model), thường sử dụng ngôn ngữ truy vấn SQL. Các DBMS thường thấy là MySQL, PostgreSQL, SQL Server, Oracle, v.v.
 - Mô hình dữ liệu tài liệu (Document Model), thường sử dụng ngôn ngữ truy vấn NoSQL. Các DBMS thường thấy là MongoDB, CouchDB, v.v.
 - Mô hình dữ liệu dạng đồ thị (Graph-like Model), thường sử dụng ngôn ngữ truy vấn như Cypher, SPARQL hay Datalog. Các DBMS thường thấy là Neo4j, Amazon Neptune, v.v.
@@ -126,7 +125,6 @@ Khi làm việc với đa nền tảng, việc đảm bảo tính nhất quán d
 
 Để quản lý các cấu trúc dữ liệu khác nhau từ các nền tảng, cấu trúc dữ liệu linh hoạt của MongoDB cho phép nhà phát triển lưu trữ các thông tin riêng của nền tảng vào một tài liệu con (sub-document) của tài liệu chính. Như vậy, thông tin chính vẫn đảm bảo tính nhất quán, trong khi các thông tin riêng của nền tảng vẫn được lưu trữ đầy đủ phục vụ các chức năng riêng biệt của nền tảng.
 
-
 ##### 1.2.3. Khả năng mở rộng và tối ưu hiệu suất
 
 Khi phần mềm chatbot mở rộng về quy mô, số lượng người dùng, số lượng cuộc hội thoại thực hiện đồng thời, số lượng truy vấn thời gian thực cũng tăng lên. MongoDB sử dụng kỹ thuật như phân mảnh (sharding), đồng bộ hóa (replication), v.v. là đặc biệt quan trọng giúp cho hệ thống có thể mở rộng theo chiều ngang một cách hiệu quả. Kĩ thuật phân mảnh giúp dữ liệu được phân tán trên nhiều máy chủ khách nhau, tăng băng thông đọc/ghi (read/write throughput) và đảm bảo không có máy chủ nào trở thành điểm thắt cổ chai (bottleneck) của hệ thống trong thời gian cao điểm.
@@ -145,11 +143,12 @@ Việc thiết kế kiến trúc phần mềm cho chatbot đa nền tảng yêu 
 
 #### 2.1 Mẫu thiết kế tiếp hợp (Adapter Design Pattern)
 
-Mẫu thiết kế adapter được coi là một giải pháp thiết thực để tích hợp các hệ thống đa nền tảng. Bằng cách trừu tượng hóa các chi tiết dành riêng cho nền tảng, mẫu thiết kế này cho phép các nhà phát triển quản lý sự khác biệt giữa các nền tảng mà không cần thay đổi logic cốt lõi của chatbot.  Tính mô-đun này rất quan trọng để đảm bảo hệ thống không bị lỗi thời, cho phép tích hợp các nền tảng mới với những thay đổi tối thiểu đối với kiến trúc cốt lõi của chatbot.
+Mẫu thiết kế adapter được coi là một giải pháp thiết thực để tích hợp các hệ thống đa nền tảng. Bằng cách trừu tượng hóa các chi tiết dành riêng cho nền tảng, mẫu thiết kế này cho phép các nhà phát triển quản lý sự khác biệt giữa các nền tảng mà không cần thay đổi logic cốt lõi của chatbot. Tính mô-đun này rất quan trọng để đảm bảo hệ thống không bị lỗi thời, cho phép tích hợp các nền tảng mới với những thay đổi tối thiểu đối với kiến trúc cốt lõi của chatbot.
 
 Trong một ứng dụng chatbot với bản chất hướng sự kiện (event-driven), mỗi adapter dành riêng cho nền tảng có thể được thiết kế để giao tiếp với các API của các dịch vụ nhắn tin khác nhau trong khi quá trình chuyển dữ liệu sang dạng tiêu chuẩn hóa trở lại logic cốt lõi của chatbot đang diễn ra. Việc tách biệt các mối quan tâm này giúp đơn giản hóa cả việc bảo trì và thử nghiệm, vì những thay đổi dành riêng cho nền tảng được giới hạn trong các adapter tương ứng
 
 ##### Ví dụ về mẫu thiết kế tích hợp
+
 Chatbot có thể có một adapter cho mỗi nền tảng nhắn tin (Zalo, Facebook Messenger, Telegram) và tất cả các adapter đều tương tác với hệ thống lõi theo cùng một cách. Cấu trúc này đảm bảo rằng bất kỳ nền tảng mới nào (chẳng hạn như WhatsApp hoặc Viber) đều có thể dễ dàng được thêm vào bằng cách tạo một adapter mới mà không cần thay đổi logic lõi của chatbot.
 
 #### 2.2. Kiến trúc hướng sự kiện trong Node.js
@@ -159,6 +158,7 @@ Kiến trúc hướng sự kiện (Event Driven Architecture) trong Node.js là 
 Các tài liệu cho thấy các hệ thống hướng sự kiện rất phù hợp cho các ứng dụng chatbot, trong đó các sự kiện khác nhau — chẳng hạn như tin nhắn đến của người dùng, trả lời đi và các lệnh gọi API đến các dịch vụ của bên thứ ba — xảy ra không đồng bộ (Richter & Coronel, 2020). Bằng cách sử dụng vòng lặp sự kiện và cơ chế gọi lại của Node.js, hệ thống có thể xử lý hiệu quả các nhu cầu I/O cao điển hình của các tương tác dựa trên trò chuyện trên nhiều nền tảng.
 
 Những lợi ích chính của Kiến trúc Hướng sự kiện:
+
 - Tính đồng thời: Khả năng xử lý nhiều sự kiện đồng thời của Node.js cho phép chatbot quản lý nhiều cuộc trò chuyện mà không gặp phải sự cố chặn luồng, đảm bảo thời gian phản hồi nhanh chóng.
 - Khả năng mở rộng: Khi số lượng người dùng hoặc nền tảng tăng lên, kiến trúc hướng sự kiện có thể mở rộng theo chiều ngang bằng cách phân phối các sự kiện trên nhiều phiên bản hoặc dịch vụ vi mô, tăng cường hơn nữa hiệu suất khi tải nặng.
 
@@ -167,6 +167,7 @@ Những lợi ích chính của Kiến trúc Hướng sự kiện:
 Tích hợp API là một khía cạnh quan trọng khi thiết kế phần mềm chatbot, đặc biệt là khi tương tác với các nền tảng khác nhau như Zalo, Facebook Messenger và Telegram. Mỗi nền tảng có bộ API, giới hạn tỷ lệ (rate limiting) và cơ chế xác thực riêng, cần được xử lý riêng rẽ cẩn thận để đảm bảo phần mềm hoạt động mượt mà. Việc thiết kế các giao diện API tốt sẽ cho phép chatbot giao tiếp hiệu quả với từng nền tảng, đảm bảo rằng việc phân phối tin nhắn, xác thực người dùng và định dạng phản hồi tuân thủ các thông số kỹ thuật của nền tảng.
 
 Cần chú ý đến các vấn đề sau:
+
 - **Giới hạn tỷ lệ:** Mỗi nền tảng nhắn tin áp đặt giới hạn tỷ lệ đối với số lượng lệnh gọi API được phép trên mỗi khung thời gian. Các cơ chế xử lý lỗi và đóng gói tin nhắn hiệu quả phải được áp dụng để tránh việc điều chỉnh hoặc trì hoãn tin nhắn.
 - **Xác thực:** Các nền tảng có thể yêu cầu các cơ chế xác thực khác nhau, chẳng hạn như OAuth cho Facebook Messenger hoặc khóa API cho Telegram. Kiến trúc phải xử lý những điều này một cách liền mạch trên các adapter, đảm bảo giao tiếp an toàn.
 - **Các tính năng dành riêng cho Nền tảng:** Mỗi nền tảng cung cấp các tính năng độc đáo — chẳng hạn như hỗ trợ phương tiện phong phú, trả lời nhanh hoặc nhãn dán — có thể cần xử lý dành riêng cho nền tảng. Kiến trúc nên đảm bảo rằng các tính năng này được hỗ trợ mà không ảnh hưởng đến tính nhất quán của logic chatbot cốt lõi.
@@ -176,7 +177,6 @@ Bằng cách thiết kế một lớp API có khả năng mở rộng, chatbot c
 #### 2.4. Kết luận
 
 Thiết kế kiến trúc phần mềm cho một chatbot đa nền tảng đòi hỏi sự cân nhắc cẩn thận về tính mô-đun, khả năng mở rộng và khả năng thời gian thực. Mẫu thiết kế adapter, kết hợp với kiến trúc hướng sự kiện trong Node.js, cung cấp một chiến lược hiệu quả để quản lý logic dành riêng cho nền tảng trong khi vẫn duy trì logic cốt lõi nhất quán. Tích hợp API và xử lý các thách thức dành riêng cho nền tảng như giới hạn tỷ lệ và xác thực cũng rất quan trọng để đảm bảo chatbot hoạt động liền mạch trên nhiều nền tảng.
-
 
 ### 3. Xử lý Yêu cầu Khách hàng: So sánh NLP và GenAI trong Chatbot
 
@@ -219,6 +219,7 @@ Xử lý hiệu quả các yêu cầu của khách hàng là yêu cầu trọng 
 ## III. Triển khai thực tế
 
 Khi triển khai thực tế dự án, ta có nhiều góc nhìn, tương ứng với các loại sơ đồ tương ứng:
+
 - Góc nhìn về chức năng của người dùng, ta dùng sơ đồ Usecase
 - Góc nhìn về các thành phần của hệ thống, ta dùng sơ đồ Class
 - Góc nhìn về các dữ liệu, ta dùng sơ đồ ERD
@@ -227,15 +228,11 @@ Khi triển khai thực tế dự án, ta có nhiều góc nhìn, tương ứng 
 
 #### 1.1. Mô tả chức năng
 
-
 #### 1.2. Sơ đồ Usecase
-
 
 ### 2. Các thành phần của hệ thống
 
-
 ### 3. Dữ liệu
-
 
 ### 4. Các giai đoạn phát triển
 
@@ -250,8 +247,8 @@ Trong Agile, ta sẽ phát triển các câu chuyện người dùng (user stori
 Các user stories và các tác vụ (tasks) cụ thể của phiên bản này là:
 
 - [ ] Khi người dùng chào, chatbot phản hồi và chào người dùng
-  - [ ] Đăng ký một Page trên Facebook để chatbot có thể nhận tin nhắn
-  - [ ] Viết một chatbot đơn giản trên Node.js có thể nhận tin nhắn và trả lời tin nhắn đơn giản
+  - [x] Đăng ký một Page trên Facebook để chatbot có thể nhận tin nhắn
+  - [x] Viết một chatbot đơn giản trên Node.js có thể nhận tin nhắn và trả lời tin nhắn đơn giản
 - [ ] Khách hàng muốn tư vấn (tìm kiếm mẫu bánh), chatbot có thể gợi ý vài mẫu bánh ngẫu nhiên
   - [ ] Dùng API của website để lấy ngẫu nhiên 5 mẫu bánh
   - [ ] Phát hiện khách muốn "tư vấn" nếu tin nhắn có từ khóa "tư vấn"
@@ -270,7 +267,6 @@ Các user stories và các tác vụ (tasks) cụ thể của phiên bản này 
 
 Mục đích của phiên bản này là có một sản phẩm demo hoàn chỉnh, tuy chatbot vẫn còn đơn giản nhưng có thể hoạt động được đầu cuối.
 
-
 ### 2. Phiên bản thử nghiệm 0.2
 
 Phiên bản này tập trung vào việc tăng cường khả năng phân loại mục đích, loại bỏ việc giới hạn của khách hàng phải tương tác bằng nút bấm thay vì ngôn ngữ tự nhiên, đồng thời tăng tính tự nhiên của chatbot bằng cách xử lý thông tin ngắt quãng vào phản hồi thông tin liên tục chia thành nhiều tin nhắn nhỏ
@@ -278,7 +274,7 @@ Phiên bản này tập trung vào việc tăng cường khả năng phân loạ
 Các user stories và tasks cụ thể của phiên bản này là:
 
 - [ ] Khách hàng có thể nhắn tin ngắt thành nhiều tin nhắn khác nhau, và chatbot sẽ trả lời khi nhận được tin nhắn cuối cùng
-  - [ ] Lưu tin nhắn ở dạng cuộc hội thoại (conversation) thay vì từng tin riêng lẻ
+  - [ ] Lưu tin nhắn theo từng phiên (session) thay vì từng tin riêng lẻ
   - [ ] Thêm delay trước khi chatbot trả lời để mô phỏng việc người dùng nhắn tin ngắt quãng
 - [ ] Khách hàng nhận được các tin nhắn nhỏ liên tục thay vì một tin nhắn lớn
   - [ ] Chia tin nhắn thành nhiều tin nhắn nhỏ hơn

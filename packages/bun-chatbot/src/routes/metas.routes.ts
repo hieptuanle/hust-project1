@@ -1,39 +1,22 @@
 import { Hono } from "hono";
-import { getEnv, getQueue } from "../env";
 import { html } from "hono/html";
+import { getEnv } from "../env";
 import { MessageHandler } from "../MessageHandler";
-import { MetaPlatform } from "../platforms";
-import { createMiddleware } from "hono/factory";
-import { z } from "zod";
 
-const metaEnvSchema = z.object({
-  META_PAGE_ACCESS_TOKEN: z.string(),
-  META_PAGE_ID: z.string(),
-  META_APP_ID: z.string(),
-  META_APP_SECRET: z.string(),
-});
+import { createMiddleware } from "hono/factory";
+import { metaPlatform } from "../platforms";
+import type { Queue } from "../queue/Queue";
+import type { JobData } from "../JobHandler";
 
 const initMessageHandler = createMiddleware<{
   Variables: {
     messageHandler: MessageHandler;
+    queue: Queue<JobData>;
   };
 }>(async (c, next) => {
-  let { success, data: env, error } = metaEnvSchema.safeParse(c.env);
-  if (!success || !env) {
-    console.error(error);
-    throw new Error("Invalid environment variables");
-  }
-
-  const metaPlatform = new MetaPlatform(
-    env.META_PAGE_ACCESS_TOKEN,
-    env.META_PAGE_ID,
-    env.META_APP_ID,
-    env.META_APP_SECRET,
-  );
-
   const messageHandler = new MessageHandler(
     metaPlatform,
-    getQueue(c),
+    c.get("queue"),
   );
 
   c.set("messageHandler", messageHandler);
@@ -70,19 +53,24 @@ const app = new Hono<{
     const stringifiedJson = await c.var.messageHandler
       .requestLongLivedAccessToken();
     return c.html(html`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Long lived access token</title>
-        <link href="/dist/globals.css" rel="stylesheet" />
-      </head>
-      <body class="bg-gray-100 min-h-screen">
-        <div class="container mx-auto p-4">
-          <h1 class="text-2xl font-bold text-center">Long lived access token</h1>
-          <pre>${stringifiedJson}</pre>
-        </div>
-      </body>
-    </html>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Long lived access token</title>
+  <link rel="icon" href="/static/logo.png" />
+  <link href="/dist/globals.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold text-center">Long lived access token</h1>
+    <pre>${stringifiedJson}</pre>
+  </div>
+</body>
+
+</html>
+
   `);
   })
   .get("/messages", async (c) => {

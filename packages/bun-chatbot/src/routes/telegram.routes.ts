@@ -1,25 +1,21 @@
 import { Hono } from "hono";
 import { html } from "hono/html";
 import { MessageHandler } from "../MessageHandler";
-import { TelegramPlatform } from "../platforms";
-import { getEnv, getQueue } from "../env";
+
 import { createMiddleware } from "hono/factory";
+import type { Queue } from "../queue/Queue";
+import { telegramPlatform } from "../platforms";
+import type { JobData } from "../JobHandler";
 
 const initMessageHandler = createMiddleware<{
   Variables: {
     messageHandler: MessageHandler;
+    queue: Queue<JobData>;
   };
 }>(async (c, next) => {
-  const telegramToken = getEnv(c, "TELEGRAM_BOT_TOKEN");
-  const telegramWebhookUrl = getEnv(c, "TELEGRAM_WEBHOOK_URL");
-
-  const telegramPlatform = new TelegramPlatform(
-    telegramToken,
-    telegramWebhookUrl,
-  );
   const messageHandler = new MessageHandler(
     telegramPlatform,
-    getQueue(c),
+    c.get("queue"),
   );
 
   c.set("messageHandler", messageHandler);
@@ -40,18 +36,23 @@ const app = new Hono<{
   .get("/register", async (c) => {
     await c.var.messageHandler.registerWebhook();
     return c.html(html`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Telegram webhook registered</title>
-        <link href="/dist/globals.css" rel="stylesheet" />
-      </head>
-      <body class="bg-gray-100 min-h-screen">
-        <div class="container mx-auto p-4">
-          <h1 class="text-2xl font-bold text-center">Telegram webhook registered</h1>
-        </div>
-      </body>
-    </html>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Telegram webhook registered</title>
+  <link rel="icon" href="/static/logo.png" />
+  <link href="/dist/globals.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold text-center">Telegram webhook registered</h1>
+  </div>
+</body>
+
+</html>
+
   `);
   })
   .get("/webhook", async (c) => {

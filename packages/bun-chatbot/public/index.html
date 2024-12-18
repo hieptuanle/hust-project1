@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cake AI Chatbot</title>
+    <link href="/dist/globals.css" rel="stylesheet" />
+    <link rel="icon" href="/static/logo.png" />
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto p-8 max-w-2xl">
+      <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
+        Cake AI Chatbot
+      </h1>
+      <p
+        class="status text-lg bg-green-100 text-green-700 p-4 rounded-lg mb-8 text-center"
+      >
+        Status: Running
+      </p>
+
+      <div class="bg-white p-6 rounded-lg shadow-md space-y-6">
+        <div>
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">General</h2>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="/privacy"
+                class="block p-3 rounded-md hover:bg-blue-50 text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                → Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a
+                href="/data-deletion"
+                class="block p-3 rounded-md hover:bg-blue-50 text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                → Data Deletion Instructions
+              </a>
+            </li>
+            <li>
+              <a
+                href="/tos"
+                class="block p-3 rounded-md hover:bg-blue-50 text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                → Terms of Service
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">Customers</h2>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="/customers"
+                class="block p-3 rounded-md hover:bg-blue-50 text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                → View Customers
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">
+            Telegram Settings
+          </h2>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="/api/v1/platforms/telegram/register"
+                class="block p-3 rounded-md hover:bg-blue-50 text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                → Register Telegram webhook
+              </a>
+            </li>
+            <li>
+              <a
+                href="/api/v1/platforms/telegram/webhook"
+                class="block p-3 rounded-md hover:bg-blue-50 text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                → Telegram webhook info
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">
+            Meta Settings
+          </h2>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="/api/v1/platforms/meta/request-long-lived-access-token"
+                class="block p-3 rounded-md hover:bg-blue-50 text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                → Request long lived access token
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

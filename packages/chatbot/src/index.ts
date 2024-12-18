@@ -2,6 +2,7 @@ import { Hono } from "hono";
 
 import metasRoutes from "./routes/metas.routes";
 import telegramRoutes from "./routes/telegram.routes";
+import queue from "./queue";
 
 const app = new Hono();
 
@@ -19,4 +20,7 @@ app.route("/api/v1/platforms/meta", metasRoutes);
 // Telegram routes
 app.route("/api/v1/platforms/telegram", telegramRoutes);
 
-export default app;
+export default {
+  fetch: app.fetch,
+  queue,
+};
