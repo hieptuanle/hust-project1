@@ -3,13 +3,15 @@ import { streamSSE } from "hono/streaming";
 import type Storage from "../storage/Storage";
 import { cn } from "../libs/utils";
 import { formatTimeAgo } from "../libs/datetime";
-import type { Cron } from "../cron";
 import { randomUUIDv7 } from "bun";
+import type { Scheduler } from "../scheduler/Scheduler";
+import type { ObjectId } from "mongodb";
+import type { JobData } from "../jobs/types/JobData";
 
 const app = new Hono<{
   Variables: {
     storage: Storage;
-    cron: Cron;
+    scheduler: Scheduler<ObjectId, JobData<ObjectId>>;
   };
 }>();
 
@@ -32,10 +34,10 @@ const PlatformTag = ({ platform }: { platform: string }) => {
 };
 
 app.get("/sse", (c) => {
-  const cron = c.var.cron;
+  const scheduler = c.var.scheduler;
 
   return streamSSE(c, async (stream) => {
-    for await (const jobs of cron.subscribeToJobs()) {
+    for await (const jobs of scheduler.generateNextJobs()) {
       console.log("jobsUpdate sse", jobs);
       await stream.writeSSE({
         data: JSON.stringify(jobs),

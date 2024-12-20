@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const eventList = document.getElementById("event-list");
 
   eventSource.addEventListener("jobsUpdate", (event) => {
-    console.log("jobsUpdate", event);
+    console.log("jobsUpdate", event.data);
     const jobs = JSON.parse(event.data);
     // Update your UI with the jobs data
     const jobsList = jobs
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="text-sm text-gray-600">Type: ${job.type}</div>
         <div class="text-sm text-gray-600">Status: ${job.status}</div>
       </li>
-    `,
+    `
       )
       .join("");
 
