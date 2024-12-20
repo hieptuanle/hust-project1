@@ -31,7 +31,7 @@ const PlatformTag = ({ platform }: { platform: string }) => {
   );
 };
 
-app.get("/sse", async (c) => {
+app.get("/sse", (c) => {
   const cron = c.var.cron;
 
   return streamSSE(c, async (stream) => {

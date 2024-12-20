@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="text-sm text-gray-600">Type: ${job.type}</div>
         <div class="text-sm text-gray-600">Status: ${job.status}</div>
       </li>
-    `
+    `,
       )
       .join("");
 

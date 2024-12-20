@@ -5,7 +5,7 @@ import { MessageHandler } from "../MessageHandler";
 import { createMiddleware } from "hono/factory";
 import type { Queue } from "../queue/Queue";
 import { telegramPlatform } from "../platforms";
-import type { JobData } from "../JobHandler";
+import type { JobData } from "../jobs/types/JobData";
 
 const initMessageHandler = createMiddleware<{
   Variables: {
@@ -57,7 +57,7 @@ const app = new Hono<{
   })
   .get("/webhook", async (c) => {
     const info = await c.var.messageHandler.getWebhookInfo();
-    return c.json(info);
+    return c.json(info as Record<string, string>);
   });
 
 export default app;

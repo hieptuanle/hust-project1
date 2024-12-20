@@ -1,4 +1,3 @@
-
 export interface QueueJob<T = unknown> {
   readonly id: string;
   name: string;

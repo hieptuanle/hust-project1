@@ -1,17 +1,17 @@
-import type { IJobHandler } from "./JobHandler";
+import type { IJobHandler } from "./jobs/JobController";
 import type Storage from "./storage/Storage";
 
 export class Cron {
   constructor(
     private storage: Storage,
     private jobHandler: IJobHandler,
-  ) { }
+  ) {}
 
   async *subscribeToJobs() {
     while (true) {
       const jobs = await this.storage.job.getProcessableJobs();
       yield jobs;
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Poll every second
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Poll every second
     }
   }
 

@@ -8,11 +8,11 @@
       "type": "bun",
       "internalConsoleOptions": "neverOpen",
       "request": "launch",
-      "name": "Debug File",
-      "program": "${file}",
+      "name": "Watch Worker",
+      "program": "src/worker.ts",
       "cwd": "${workspaceFolder}",
       "stopOnEntry": false,
-      "watchMode": false
+      "watchMode": true
     },
     {
       "type": "bun",

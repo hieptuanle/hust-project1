@@ -41,7 +41,7 @@ export class MetaPlatform implements Platform {
     private pageId: string,
     private appId: string,
     private appSecret: string,
-  ) {}
+  ) { }
 
   id = "meta" as const;
   name = "Meta" as const;
@@ -50,8 +50,10 @@ export class MetaPlatform implements Platform {
     return senderId === this.pageId ? "assistant" : "user";
   }
 
-  async extractMessage(body: MetaMessage): Promise<PlatformMessage> {
-    const messaging = body.entry[0].messaging[0];
+  async extractMessage(body: unknown): Promise<PlatformMessage> {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    const metaBody = body as MetaMessage;
+    const messaging = metaBody.entry[0].messaging[0];
     return {
       sender: messaging.sender.id,
       timestamp: messaging.timestamp,
@@ -85,10 +87,9 @@ export class MetaPlatform implements Platform {
       if (!response.ok) {
         const errorBody = await response.json();
         throw new Error(
-          `Failed to send message to ${message.receiver}: ${
-            JSON.stringify(
-              errorBody,
-            )
+          `Failed to send message to ${message.receiver}: ${JSON.stringify(
+            errorBody,
+          )
           }`,
         );
       }

@@ -6,8 +6,8 @@ import type {
   PlatformSessionStorage,
 } from "./PlatformSession";
 import type { SessionMessage, SessionMessageStorage } from "./SessionMessage";
-import type { Job, JobStatus, JobStorage } from "./Job";
-import type { JobData } from "../JobHandler";
+import type { Job, JobStorage } from "./Job";
+import type { JobData } from "../jobs/types/JobData";
 
 class MongoPlatformUserStorage implements PlatformUserStorage<ObjectId> {
   private readonly collection: Collection<Omit<PlatformUser<ObjectId>, "id">>;
@@ -74,8 +74,6 @@ class MongoPlatformUserStorage implements PlatformUserStorage<ObjectId> {
   }
 }
 
-
-
 class MongoSessionMessageStorage implements SessionMessageStorage<ObjectId> {
   private readonly collection: Collection<Omit<SessionMessage<ObjectId>, "id">>;
 
@@ -109,7 +107,10 @@ class MongoSessionMessageStorage implements SessionMessageStorage<ObjectId> {
   }
 
   async saveMessages(
-    messages: Omit<SessionMessage<ObjectId>, "id" | "createdAt" | "updatedAt">[],
+    messages: Omit<
+      SessionMessage<ObjectId>,
+      "id" | "createdAt" | "updatedAt"
+    >[],
   ): Promise<SessionMessage<ObjectId>[]> {
     const result = await this.collection.insertMany(messages.map((message) => ({
       ...message,
@@ -144,7 +145,8 @@ class MongoJobStorage<T> implements JobStorage<ObjectId, T> {
   }
 
   async getScheduledJobsByName(name: string): Promise<Job<ObjectId, T>[]> {
-    const jobs = await this.collection.find({ name, status: 'SCHEDULED' }).toArray();
+    const jobs = await this.collection.find({ name, status: "SCHEDULED" })
+      .toArray();
     return jobs.map((job) => {
       return { ...job, id: job._id };
     });
@@ -186,7 +188,10 @@ class MongoJobStorage<T> implements JobStorage<ObjectId, T> {
   }
 
   async createJob(
-    job: Omit<Job<ObjectId, T>, "id" | "createdAt" | "updatedAt" | "addMessage">,
+    job: Omit<
+      Job<ObjectId, T>,
+      "id" | "createdAt" | "updatedAt" | "addMessage"
+    >,
   ): Promise<Job<ObjectId, T>> {
     const result = await this.collection.insertOne({
       ...job,
@@ -209,10 +214,10 @@ class MongoJobStorage<T> implements JobStorage<ObjectId, T> {
   }
 }
 
-
-
 class MongoPlatformSessionStorage implements PlatformSessionStorage<ObjectId> {
-  private readonly collection: Collection<Omit<PlatformSession<ObjectId>, "id">>;
+  private readonly collection: Collection<
+    Omit<PlatformSession<ObjectId>, "id">
+  >;
 
   constructor(
     private readonly db: Db,
@@ -221,7 +226,9 @@ class MongoPlatformSessionStorage implements PlatformSessionStorage<ObjectId> {
     this.collection = db.collection(collectionName);
   }
 
-  async getActiveSession(platformUser: ObjectId): Promise<PlatformSession<ObjectId> | null> {
+  async getActiveSession(
+    platformUser: ObjectId,
+  ): Promise<PlatformSession<ObjectId> | null> {
     const session = await this.collection.findOne({
       platformUser: platformUser,
       status: "ACTIVE",
@@ -260,7 +267,9 @@ class MongoPlatformSessionStorage implements PlatformSessionStorage<ObjectId> {
     };
   }
 
-  async updateSession(session: PlatformSession<ObjectId>): Promise<PlatformSession<ObjectId>> {
+  async updateSession(
+    session: PlatformSession<ObjectId>,
+  ): Promise<PlatformSession<ObjectId>> {
     const result = await this.collection.updateOne({
       _id: session.id,
     }, {

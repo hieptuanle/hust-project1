@@ -1,5 +1,5 @@
-import { Queue as BullMQQueue } from 'bullmq';
-import type { Queue, QueueJob } from './Queue';
+import { Queue as BullMQQueue } from "bullmq";
+import type { Queue, QueueJob } from "./Queue";
 
 export class BullQueue implements Queue {
   private readonly queue: BullMQQueue;

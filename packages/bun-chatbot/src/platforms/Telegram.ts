@@ -1,5 +1,6 @@
 import type { OutgoingMessage, Platform, PlatformMessage } from "./Platform";
 
+
 // Telegram Types
 type TelegramUpdate = {
   update_id: number;
@@ -22,7 +23,7 @@ type TelegramUpdate = {
 };
 
 export class TelegramPlatform implements Platform {
-  constructor(private botToken: string, private webhookUrl: string) {}
+  constructor(private botToken: string, private webhookUrl: string) { }
 
   id = "telegram" as const;
   name = "Telegram" as const;
@@ -33,18 +34,19 @@ export class TelegramPlatform implements Platform {
     await fetch(url);
   }
 
-  async getWebhookInfo(): Promise<any> {
+  async getWebhookInfo(): Promise<JSON> {
     const url = `https://api.telegram.org/bot${this.botToken}/getWebhookInfo`;
     const response = await fetch(url);
     return response.json();
   }
 
-  async extractMessage(body: TelegramUpdate): Promise<PlatformMessage> {
-    console.log(JSON.stringify(body, null, 2));
+  async extractMessage(body: unknown): Promise<PlatformMessage> {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    const telegramBody = body as TelegramUpdate;
     return {
-      sender: body.message.from.id.toString(),
-      timestamp: body.message.date * 1000, // Convert to milliseconds
-      message: body.message.text,
+      sender: telegramBody.message.from.id.toString(),
+      timestamp: telegramBody.message.date * 1000, // Convert to milliseconds
+      message: telegramBody.message.text,
       platform: this.id,
       role: "user",
     };
@@ -64,26 +66,9 @@ export class TelegramPlatform implements Platform {
     });
   }
 
+
+  // deno-lint-ignore require-await
   async getMessages(): Promise<PlatformMessage[]> {
-    const url =
-      `https://api.telegram.org/bot${this.botToken}/getUpdates?allowed_updates=message`;
-    const response = await fetch(url);
-    const data = (await response.json()) as any;
-
-    if (!data.ok || !Array.isArray(data.result)) {
-      throw new Error(
-        "Failed to fetch messages. Error: " + JSON.stringify(data),
-      );
-    }
-
-    return data.result
-      .filter((update: TelegramUpdate) => update.message && update.message.text)
-      .map((update: TelegramUpdate) => ({
-        sender: update.message.from.id.toString(),
-        timestamp: update.message.date * 1000, // Convert to milliseconds
-        message: update.message.text,
-        platform: this.id,
-        role: "user",
-      }));
+    return []
   }
 }

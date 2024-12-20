@@ -6,7 +6,7 @@ import { MessageHandler } from "../MessageHandler";
 import { createMiddleware } from "hono/factory";
 import { metaPlatform } from "../platforms";
 import type { Queue } from "../queue/Queue";
-import type { JobData } from "../JobHandler";
+import type { JobData } from "../jobs/types/JobData";
 
 const initMessageHandler = createMiddleware<{
   Variables: {
