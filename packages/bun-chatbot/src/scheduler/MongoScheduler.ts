@@ -25,7 +25,6 @@ export class MongoScheduler implements Scheduler<ObjectId, JobData<ObjectId>> {
   > {
     while (true) {
       const jobs = await this.storage.job.getProcessableJobs();
-      console.log("Generating jobs", jobs);
       yield jobs;
       await new Promise((resolve) => setTimeout(resolve, this.interval));
     }

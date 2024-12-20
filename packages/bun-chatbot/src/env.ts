@@ -15,6 +15,7 @@ type Bindings = {
   QUEUE_NAME: string;
   MONGO_URI: string;
   MONGO_DB_NAME: string;
+  ZALO_ACCESS_TOKEN: string;
 };
 
 export const getEnv = (c: Context, key: keyof Bindings) => {
@@ -33,6 +34,7 @@ const envSchema = z.object({
   QUEUE_NAME: z.string(),
   MONGO_URI: z.string(),
   MONGO_DB_NAME: z.string(),
+  ZALO_ACCESS_TOKEN: z.string(),
 });
 
 export const processEnv = envSchema.parse(process.env);

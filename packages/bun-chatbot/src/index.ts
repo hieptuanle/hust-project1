@@ -8,6 +8,8 @@ import { createMiddleware } from "hono/factory";
 import customersRoutes from "./routes/customers.routes";
 import mongoScheduler from "./scheduler";
 import { bullQueue } from "./queue";
+import zaloRoutes from "./routes/zalo.routes";
+import { showRoutes } from 'hono/dev'
 
 const app = new Hono();
 
@@ -61,11 +63,16 @@ app.route("/api/v1/platforms/meta", metasRoutes);
 // Telegram routes
 app.route("/api/v1/platforms/telegram", telegramRoutes);
 
+// Zalo routes
+app.route("/api/v1/platforms/zalo", zaloRoutes);
+
 app.route("/customers", customersRoutes);
 
 await mongoStorage.connect();
 
 mongoScheduler.start();
+
+showRoutes(app);
 
 export default {
   fetch: app.fetch,

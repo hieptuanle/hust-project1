@@ -24,4 +24,4 @@ export interface OutgoingMessage {
   message: string;
 }
 
-export type PlatformId = "meta" | "telegram";
+export type PlatformId = "meta" | "telegram" | "zalo";

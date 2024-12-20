@@ -1,6 +1,7 @@
 import { MetaPlatform } from "./Meta";
 import { TelegramPlatform } from "./Telegram";
 import { processEnv } from "../env";
+import { ZaloPlatform } from "./Zalo";
 export type { OutgoingMessage, Platform, PlatformMessage } from "./Platform";
 
 export const telegramPlatform = new TelegramPlatform(
@@ -15,4 +16,8 @@ export const metaPlatform = new MetaPlatform(
   processEnv.META_APP_SECRET,
 );
 
-export const platforms = [telegramPlatform, metaPlatform];
+export const zaloPlatform = new ZaloPlatform(
+  processEnv.ZALO_ACCESS_TOKEN,
+);
+
+export const platforms = [telegramPlatform, metaPlatform, zaloPlatform];
