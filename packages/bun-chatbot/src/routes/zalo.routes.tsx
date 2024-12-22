@@ -28,9 +28,7 @@ const app = new Hono<{
   .get("/", (c) => {
     return c.html(<div>Hello World </div>);
   })
-  .post("/callback", async (c) => {
-    const body = await c.req.json();
-    await c.var.messageHandler.handleIncomingMessage(body);
+  .get("/callback", async (c) => {
     return c.text("OK");
   })
   .post("/callback", async (c) => {
