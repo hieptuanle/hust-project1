@@ -7,12 +7,13 @@ import { UnderstandContentHandler } from "./handlers/UnderstandHandler";
 import { ProcessMessageHandler } from "./handlers/ProcessHandler";
 import {
   GreetingHandler,
-  IntroRandomProductsHandler,
   IntroWebsiteHandler,
 } from "./handlers/IntroHandler";
 import { RespondHandler } from "./handlers/RespondHandler";
 import { SessionHandler } from "./handlers/SessionHandler";
 import type { BaseJobHandler } from "./types/BaseJobHandler";
+import type { ProductController } from "../resources/Product";
+import { RandomProductsHandler, SearchProductHandler } from "./handlers/ProductHandler";
 
 export type Job<T = JobData> = {
   id: string;
@@ -27,6 +28,7 @@ export class JobController<ID = string> {
     private storage: Storage<ID>,
     private scheduler: Scheduler<ID, JobData<ID>>,
     private queue: Queue<JobData>,
+    private productController: ProductController,
   ) {
     this.registerHandler(
       "PROCESS_MESSAGE",
@@ -35,6 +37,7 @@ export class JobController<ID = string> {
         this.storage,
         this.scheduler,
         this.queue,
+        this.productController,
       ),
     );
     this.registerHandler(
@@ -44,6 +47,7 @@ export class JobController<ID = string> {
         this.storage,
         this.scheduler,
         this.queue,
+        this.productController,
       ),
     );
     this.registerHandler(
@@ -53,6 +57,7 @@ export class JobController<ID = string> {
         this.storage,
         this.scheduler,
         this.queue,
+        this.productController,
       ),
     );
     this.registerHandler(
@@ -62,6 +67,7 @@ export class JobController<ID = string> {
         this.storage,
         this.scheduler,
         this.queue,
+        this.productController,
       ),
     );
     this.registerHandler(
@@ -71,6 +77,7 @@ export class JobController<ID = string> {
         this.storage,
         this.scheduler,
         this.queue,
+        this.productController,
       ),
     );
     this.registerHandler(
@@ -80,15 +87,27 @@ export class JobController<ID = string> {
         this.storage,
         this.scheduler,
         this.queue,
+        this.productController,
       ),
     );
     this.registerHandler(
       "INTRO_RANDOM_PRODUCTS",
-      new IntroRandomProductsHandler<ID>(
+      new RandomProductsHandler<ID>(
         this.platforms,
         this.storage,
         this.scheduler,
         this.queue,
+        this.productController,
+      ),
+    );
+    this.registerHandler(
+      "SEARCH_PRODUCT",
+      new SearchProductHandler<ID>(
+        this.platforms,
+        this.storage,
+        this.scheduler,
+        this.queue,
+        this.productController,
       ),
     );
   }

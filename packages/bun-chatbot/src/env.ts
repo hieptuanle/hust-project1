@@ -16,6 +16,7 @@ type Bindings = {
   MONGO_URI: string;
   MONGO_DB_NAME: string;
   ZALO_ACCESS_TOKEN: string;
+  CMS_URL: string;
 };
 
 export const getEnv = (c: Context, key: keyof Bindings) => {
@@ -35,6 +36,7 @@ const envSchema = z.object({
   MONGO_URI: z.string(),
   MONGO_DB_NAME: z.string(),
   ZALO_ACCESS_TOKEN: z.string(),
+  CMS_URL: z.string(),
 });
 
 export const processEnv = envSchema.parse(process.env);

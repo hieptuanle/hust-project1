@@ -41,6 +41,15 @@ export type JobData<ID = string> =
     };
   }
   | {
+    type: "SEARCH_PRODUCT";
+    payload: {
+      query: string;
+      platformUser: ID;
+      platform: PlatformId;
+      session: ID;
+    };
+  }
+  | {
     type: "SHOW_PRODUCT_DETAILS";
     payload: {
       productId: ID;
