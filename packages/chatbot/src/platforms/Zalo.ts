@@ -84,6 +84,21 @@ export class ZaloPlatform implements Platform {
     await this.storage.platformConfig.updateConfig(config);
   }
 
+  async getAccessToken() {
+    const config = await this.getConfig();
+    return config?.accessToken ?? this.accessToken;
+  }
+
+  async getRefreshToken() {
+    const config = await this.getConfig();
+    return config?.refreshToken ?? this.refreshToken;
+  }
+
+  async getConfig() {
+    const config = await this.storage.platformConfig.getConfig(this.id);
+    return config;
+  }
+
   setAccessToken(accessToken: string) {
     this.accessToken = accessToken;
   }
@@ -121,7 +136,7 @@ export class ZaloPlatform implements Platform {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "access_token": this.accessToken
+          "access_token": await this.getAccessToken()
         },
         body: JSON.stringify(payload),
       });
@@ -151,7 +166,7 @@ export class ZaloPlatform implements Platform {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "access_token": this.accessToken
+        "access_token": await this.getAccessToken()
       }
     });
 
@@ -188,7 +203,7 @@ export class ZaloPlatform implements Platform {
           'secret_key': secretKey
         },
         body: new URLSearchParams({
-          refresh_token: refreshToken ?? this.refreshToken,
+          refresh_token: refreshToken ?? await this.getRefreshToken(),
           app_id: appId,
           grant_type: 'refresh_token'
         }).toString()
