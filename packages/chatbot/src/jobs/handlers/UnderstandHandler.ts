@@ -12,7 +12,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
 
     console.log(`Trying to understand content: ${text}`);
 
-    if (text.match(/giới thiệu|1\./igm)) {
+    if (text.match(/giới thiệu|^\s*1\.?\s*$/igm)) {
       await this.queue.add({
         name: "GREETING",
         data: {
@@ -24,7 +24,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    } else if (text.match(/xem menu|menu|menu sản phẩm|menu sản phẩm|2\./igm)) {
+    } else if (text.match(/xem menu|menu|menu sản phẩm|menu sản phẩm|^\s*2\.?\s*$/igm)) {
       await this.queue.add({
         name: "INTRO_WEBSITE",
         data: {
@@ -36,7 +36,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    } else if (text.match(/ngẫu nhiên|ý tưởng|3\./igm)) {
+    } else if (text.match(/ngẫu nhiên|ý tưởng|^\s*3\.?\s*$/igm)) {
       await this.queue.add({
         name: "INTRO_RANDOM_PRODUCTS",
         data: {
@@ -48,7 +48,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    } else if (text.match(/(xem|tìm).*(mẫu|bánh) (.*)|4\./igm)) {
+    } else if (text.match(/(xem|tìm).*(mẫu|bánh) (.*)|^\s*4\.?\s*$/igm)) {
       const query = text.match(/(xem|tìm).*(mẫu|bánh) (.*)/im)?.[3] || "";
       console.log(`Query: ${query}`);
       if (!query) {
@@ -78,7 +78,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    } else if (text.match(/tạm biệt|5\./igm)) {
+    } else if (text.match(/tạm biệt|^\s*5\.?\s*$/igm)) {
       await this.queue.add({
         name: "SESSION_DONE",
         data: {
