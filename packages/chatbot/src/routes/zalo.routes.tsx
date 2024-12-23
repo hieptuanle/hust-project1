@@ -39,6 +39,11 @@ const app = new Hono<{
   .get("/messages", async (c) => {
     const messages = await c.var.messageHandler.getMessages();
     return c.json(messages);
-  });
+  })
+  // .get("/refresh-access-token", async (c) => {
+  //   const { accessToken, refreshToken, expiresIn } = await zaloPlatform.refreshAccessToken();
+  //   zaloPlatform.updateConfig({ accessToken, refreshToken });
+  //   return c.json({ accessToken, refreshToken, expiresIn });
+  // });
 
 export default app;

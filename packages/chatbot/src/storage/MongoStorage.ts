@@ -8,6 +8,44 @@ import type {
 import type { SessionMessage, SessionMessageStorage } from "./SessionMessage";
 import type { Job, JobStorage } from "./Job";
 import type { JobData } from "../jobs/types/JobData";
+import type { PlatformConfig, PlatformConfigStorage } from "./PlatformConfigStorage";
+import type { PlatformId } from "../platforms/Platform";
+
+class MongoPlatformConfigStorage implements PlatformConfigStorage<ObjectId> {
+  private readonly collection: Collection<Omit<PlatformConfig<ObjectId>, "id">>;
+
+  constructor(
+    private readonly db: Db,
+    private readonly collectionName: string,
+  ) {
+    this.collection = db.collection(collectionName);
+  }
+
+  async getConfig(platformId: PlatformId): Promise<PlatformConfig<ObjectId> | null> {
+    const config = await this.collection.findOne({ platformId }, { sort: { updatedAt: -1 } });
+    if (!config) {
+      return null;
+    }
+    return { ...config, id: config._id };
+  }
+
+  async createConfig(config: Omit<PlatformConfig<ObjectId>, "id" | "createdAt" | "updatedAt">): Promise<void> {
+    await this.collection.insertOne({
+      ...config,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  }
+
+  async updateConfig(config: PlatformConfig<ObjectId>): Promise<void> {
+    await this.collection.updateOne({ _id: config.id }, {
+      $set: {
+        ...config,
+        updatedAt: new Date(),
+      },
+    });
+  }
+}
 
 class MongoPlatformUserStorage implements PlatformUserStorage<ObjectId> {
   private readonly collection: Collection<Omit<PlatformUser<ObjectId>, "id">>;
@@ -296,7 +334,7 @@ class MongoPlatformSessionStorage implements PlatformSessionStorage<ObjectId> {
 
 export class MongoStorage implements Storage<ObjectId, JobData<ObjectId>> {
   private readonly db: Db;
-
+  public platformConfig: PlatformConfigStorage<ObjectId>;
   public platformUser: PlatformUserStorage<ObjectId>;
   public platformSession: PlatformSessionStorage<ObjectId>;
   public sessionMessage: SessionMessageStorage<ObjectId>;
@@ -309,6 +347,7 @@ export class MongoStorage implements Storage<ObjectId, JobData<ObjectId>> {
     this.client = client;
     this.db = client.db(dbName);
 
+    this.platformConfig = new MongoPlatformConfigStorage(this.db, "platform_configs");
     this.platformUser = new MongoPlatformUserStorage(this.db, "platform_users");
     this.platformSession = new MongoPlatformSessionStorage(
       this.db,

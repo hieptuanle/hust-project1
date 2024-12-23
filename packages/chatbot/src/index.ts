@@ -11,6 +11,8 @@ import { bullQueue } from "./queue";
 import zaloRoutes from "./routes/zalo.routes";
 import { showRoutes } from 'hono/dev'
 import { processEnv } from "./env";
+import Cron from "./cron";
+import { platforms } from "./platforms";
 
 const app = new Hono();
 
@@ -28,6 +30,8 @@ const initScheduler = createMiddleware(async (c, next) => {
   c.set("scheduler", mongoScheduler);
   await next();
 });
+
+new Cron(platforms).start();
 
 app.use(logger());
 app.use(initStorage);

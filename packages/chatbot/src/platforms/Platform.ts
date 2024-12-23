@@ -9,6 +9,7 @@ export interface Platform {
   getWebhookInfo?: () => Promise<any>;
   requestLongLivedAccessToken?: () => Promise<string>;
   getMessages: () => Promise<PlatformMessage[]>;
+  refreshAccessToken?: (refreshToken?: string) => Promise<{ accessToken: string, refreshToken: string, expiresIn: number }>;
 }
 
 export interface PlatformMessage {

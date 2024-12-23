@@ -1,3 +1,5 @@
+import type { ObjectId } from "mongodb";
+import type Storage from "../storage/Storage";
 import type { OutgoingMessage, Platform, PlatformMessage } from "./Platform";
 
 
@@ -44,7 +46,51 @@ export class ZaloPlatform implements Platform {
 
   constructor(
     private accessToken: string,
+    private refreshToken: string,
+    private appId: string,
+    private appSecret: string,
+    private storage: Storage<ObjectId>,
   ) { }
+
+  async init() {
+    const config = await this.storage.platformConfig.getConfig(this.id);
+    if (config && config.accessToken && config.refreshToken) {
+      this.setAccessToken(config.accessToken)
+      this.setRefreshToken(config.refreshToken)
+    } else {
+      await this.storage.platformConfig.createConfig({
+        platformId: this.id,
+        accessToken: this.accessToken,
+        refreshToken: this.refreshToken,
+      });
+    }
+  }
+
+  async updateConfig({
+    accessToken,
+    refreshToken,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+  }) {
+    const config = await this.storage.platformConfig.getConfig(this.id);
+    this.setAccessToken(accessToken);
+    this.setRefreshToken(refreshToken);
+    if (!config) {
+      throw new Error('Zalo config not found');
+    }
+    config.accessToken = accessToken;
+    config.refreshToken = refreshToken;
+    await this.storage.platformConfig.updateConfig(config);
+  }
+
+  setAccessToken(accessToken: string) {
+    this.accessToken = accessToken;
+  }
+
+  setRefreshToken(refreshToken: string) {
+    this.refreshToken = refreshToken;
+  }
 
   async extractMessage(body: unknown): Promise<PlatformMessage> {
     const message = body as ZaloMessageWebhookPayload;
@@ -127,5 +173,45 @@ export class ZaloPlatform implements Platform {
       message: message.message,
       platform: this.id,
     }));
+  }
+
+  async refreshAccessToken(refreshToken?: string) {
+    const url = 'https://oauth.zaloapp.com/v4/oa/access_token';
+    const secretKey = this.appSecret;
+    const appId = this.appId;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'secret_key': secretKey
+        },
+        body: new URLSearchParams({
+          refresh_token: refreshToken ?? this.refreshToken,
+          app_id: appId,
+          grant_type: 'refresh_token'
+        }).toString()
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error refreshing access token: ${response.statusText}`);
+      }
+
+      const data = await response.json() as {
+        access_token: string;
+        refresh_token: string;
+        expires_in: string;
+      }
+
+      return {
+        accessToken: data.access_token,
+        refreshToken: data.refresh_token,
+        expiresIn: parseInt(data.expires_in)
+      };
+    } catch (error) {
+      console.error('Failed to refresh access token:', error);
+      throw error;
+    }
   }
 }

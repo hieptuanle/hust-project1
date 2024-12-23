@@ -2,6 +2,7 @@ import { MetaPlatform } from "./Meta";
 import { TelegramPlatform } from "./Telegram";
 import { processEnv } from "../env";
 import { ZaloPlatform } from "./Zalo";
+import { mongoStorage } from "../storage";
 export type { OutgoingMessage, Platform, PlatformMessage } from "./Platform";
 
 export const telegramPlatform = new TelegramPlatform(
@@ -18,6 +19,16 @@ export const metaPlatform = new MetaPlatform(
 
 export const zaloPlatform = new ZaloPlatform(
   processEnv.ZALO_ACCESS_TOKEN,
+  processEnv.ZALO_REFRESH_TOKEN,
+  processEnv.ZALO_APP_ID,
+  processEnv.ZALO_APP_SECRET,
+  mongoStorage,
 );
+
+try {
+  await zaloPlatform.init();
+} catch (error) {
+  console.error(error);
+}
 
 export const platforms = [telegramPlatform, metaPlatform, zaloPlatform];
