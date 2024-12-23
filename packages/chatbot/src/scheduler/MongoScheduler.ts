@@ -18,12 +18,15 @@ export class MongoScheduler implements Scheduler<ObjectId, JobData<ObjectId>> {
     this.queue = queue;
   }
 
-  async *generateNextJobs(): AsyncGenerator<
+  async *generateNextJobs(signal: AbortSignal): AsyncGenerator<
     Job<ObjectId, JobData<ObjectId>>[],
     void,
     unknown
   > {
     while (true) {
+      if (signal.aborted) {
+        break;
+      }
       const jobs = await this.storage.job.getProcessableJobs();
       yield jobs;
       await new Promise((resolve) => setTimeout(resolve, this.interval));
@@ -76,7 +79,8 @@ export class MongoScheduler implements Scheduler<ObjectId, JobData<ObjectId>> {
   }
 
   async start(): Promise<void> {
-    for await (const jobs of this.generateNextJobs()) {
+    const controller = new AbortController();
+    for await (const jobs of this.generateNextJobs(controller.signal)) {
       for (const job of jobs) {
         try {
           await this.queue.add({

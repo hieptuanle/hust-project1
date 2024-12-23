@@ -9,5 +9,5 @@ export interface ScheduleJob<ID = string, T = unknown> {
 export interface Scheduler<ID, T = unknown> {
   schedule(job: Omit<ScheduleJob<ID, T>, "id">): Promise<void>;
   start(): Promise<void> | void;
-  generateNextJobs(): AsyncGenerator<ScheduleJob<ID, T>[], void, unknown>;
+  generateNextJobs(signal: AbortSignal): AsyncGenerator<ScheduleJob<ID, T>[], void, unknown>;
 }

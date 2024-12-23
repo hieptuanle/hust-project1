@@ -37,7 +37,12 @@ app.get("/sse", (c) => {
   const scheduler = c.var.scheduler;
 
   return streamSSE(c, async (stream) => {
-    for await (const jobs of scheduler.generateNextJobs()) {
+    const controller = new AbortController();
+    stream.onAbort(() => {
+      console.log("Aborted!");
+      controller.abort();
+    });
+    for await (const jobs of scheduler.generateNextJobs(controller.signal)) {
       console.log("jobsUpdate sse", jobs);
       await stream.writeSSE({
         data: JSON.stringify(jobs),
