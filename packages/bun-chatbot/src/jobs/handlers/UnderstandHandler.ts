@@ -12,7 +12,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
 
     console.log(`Trying to understand content: ${text}`);
 
-    if (text.match(/giới thiệu/igm)) {
+    if (text.match(/giới thiệu|1\./igm)) {
       await this.queue.add({
         name: "GREETING",
         data: {
@@ -24,9 +24,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    }
-
-    if (text.match(/xem menu|menu|menu sản phẩm|menu sản phẩm/igm)) {
+    } else if (text.match(/xem menu|menu|menu sản phẩm|menu sản phẩm|2\./igm)) {
       await this.queue.add({
         name: "INTRO_WEBSITE",
         data: {
@@ -38,9 +36,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    }
-
-    if (text.match(/ngẫu nhiên|ý tưởng/igm)) {
+    } else if (text.match(/ngẫu nhiên|ý tưởng|3\./igm)) {
       await this.queue.add({
         name: "INTRO_RANDOM_PRODUCTS",
         data: {
@@ -52,9 +48,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    }
-
-    if (text.match(/(xem|tìm).*(mẫu|bánh) (.*)/igm)) {
+    } else if (text.match(/(xem|tìm).*(mẫu|bánh) (.*)|4\./igm)) {
       const query = text.match(/(xem|tìm).*(mẫu|bánh) (.*)/im)?.[3] || "";
       console.log(`Query: ${query}`);
       if (!query) {
@@ -84,9 +78,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    }
-
-    if (text.match(/tạm biệt/igm)) {
+    } else if (text.match(/tạm biệt|5\./igm)) {
       await this.queue.add({
         name: "SESSION_DONE",
         data: {
@@ -95,6 +87,19 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
             platformUser: jobData.payload.platformUser,
             platform: jobData.payload.platform,
             session: jobData.payload.session,
+          },
+        },
+      });
+    } else {
+      await this.queue.add({
+        name: "RESPOND",
+        data: {
+          type: "RESPOND",
+          payload: {
+            platformUser: jobData.payload.platformUser,
+            platform: jobData.payload.platform,
+            session: jobData.payload.session,
+            message: "Xin lỗi, có vẻ bạn nhập sai cú pháp. Xin mời nhập lại.",
           },
         },
       });
