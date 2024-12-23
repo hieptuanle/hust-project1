@@ -10,6 +10,7 @@ import mongoScheduler from "./scheduler";
 import { bullQueue } from "./queue";
 import zaloRoutes from "./routes/zalo.routes";
 import { showRoutes } from 'hono/dev'
+import { processEnv } from "./env";
 
 const app = new Hono();
 
@@ -76,6 +77,6 @@ showRoutes(app);
 
 export default {
   fetch: app.fetch,
-  port: 8787,
+  port: processEnv.PORT,
   // queue,
 };
