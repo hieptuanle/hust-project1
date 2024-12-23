@@ -8,6 +8,24 @@ async function showProducts(products: Product[], jobData: JobData<string>, queue
   if (jobData.type !== "INTRO_RANDOM_PRODUCTS" && jobData.type !== "SEARCH_PRODUCT") {
     throw new Error(`Cannot show product for job type: ${jobData.type}`);
   }
+
+  if (jobData.type === 'SEARCH_PRODUCT' && products.length === 0) {
+    const query = jobData.payload.query;
+    await queue.add({
+      name: "RESPOND",
+      data: {
+        type: "RESPOND",
+        payload: {
+          message: `Không tìm thấy sản phẩm phù hợp với tìm kiếm cho "${query}"`,
+          platformUser: jobData.payload.platformUser,
+          platform: jobData.payload.platform,
+          session: jobData.payload.session,
+        },
+      }
+    });
+    return;
+  }
+
   for (const product of products) {
     await queue.add({
       name: "RESPOND",

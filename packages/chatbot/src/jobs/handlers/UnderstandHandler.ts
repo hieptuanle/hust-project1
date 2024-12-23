@@ -48,8 +48,8 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
           },
         },
       });
-    } else if (text.match(/(xem|tìm).*(mẫu|bánh) (.*)|^\s*4\.?\s*$/igm)) {
-      const query = text.match(/(xem|tìm).*(mẫu|bánh) (.*)/im)?.[3] || "";
+    } else if (text.match(/(xem|tìm).*(mẫu|bánh) (.*)|^\s*4\.?\s*$|(có|cho).*(mẫu|bánh) (.*)/igm)) {
+      const query = text.match(/(xem|tìm).*(mẫu|bánh) (.*)/im)?.[3] || text.match(/^\s*4\.?\s*(\w.*)$/im)?.[1] || text.match(/(có|cho).*(mẫu|bánh) (.*)/im)?.[2] || "";
       console.log(`Query: ${query}`);
       if (!query) {
         await this.queue.add({
