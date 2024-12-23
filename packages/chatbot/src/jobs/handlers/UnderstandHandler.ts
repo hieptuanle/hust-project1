@@ -12,7 +12,7 @@ export class UnderstandContentHandler<ID> extends BaseJobHandler<ID> {
 
     console.log(`Trying to understand content: ${text}`);
 
-    if (text.match(/giới thiệu|^\s*1\.?\s*$/igm)) {
+    if (text.match(/giới thiệu|chào|^\s*1\.?\s*$/igm)) {
       await this.queue.add({
         name: "GREETING",
         data: {
